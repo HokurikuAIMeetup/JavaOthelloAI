@@ -9,11 +9,6 @@ public class GameUtil {
     public static final int COLS = 8;
     public static final int ROWS = 8;
 
-    private int width;
-    private int height;
-    private int top;
-    private int left;
-
     private Discs board[][] = new Discs[ROWS][COLS];
     private Discs turn;
 
@@ -48,6 +43,7 @@ public class GameUtil {
     public void SetTurn(Discs player){
         this.turn = player;
     }
+
     public static Discs ChangePlayer(Discs pl){
         if(pl==Discs.BLACK){
             pl = Discs.WHITE;
@@ -67,40 +63,9 @@ public class GameUtil {
         System.out.println("Turn Changed");
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setTop(int top) {
-        this.top = top;
-    }
-
-    public int getTop() {
-        return top;
-    }
-
-    public void setLeft(int left) {
-        this.left = left;
-    }
-
-    public int getLeft() {
-        return left;
-    }
 
     public Discs[][] getCells(){
         return board;
-    }
-
-    public float getCellWidth(){
-        return (float)(this.width / COLS);
-    }
-
-    public float getCellHeidht(){
-        return (float)(this.height / ROWS);
     }
 
     public void Move(int r, int c, Discs turn) throws Exception{
@@ -112,21 +77,12 @@ public class GameUtil {
         board[r][c]=turn;
     }
 
-    public Discs getTurn(){
-        return this.turn;
-    }
-
     public Discs[][] put(Discs[][] board,Discs color,int x,int y){
         reverse(board,color,x,y,true);
         board[x][y] = color;
         return board;
     }
-    public int getOneCellSizeWidth(){
-        return width/8;
-    }
-    public int getOneCellSizeHeight(){
-        return height/8;
-    }
+
     public boolean put(Discs color,int x, int y){
         //すでに駒があるところには置けない
         if(board[x][y] != Discs.BLANK){
