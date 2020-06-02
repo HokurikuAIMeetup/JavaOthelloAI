@@ -13,34 +13,47 @@ class Main{
         int playMode = 0;
 
         GameUtil gameUtil = new GameUtil();
+
+        //othelloAI_1は必ず黒番 othelloAI_2は必ず白番
         OthelloAI othelloAI_1 = new OthelloAI(0);//AIプレイヤーは黒の場合、0を指定 AIが白の場合1を指定;
         OthelloAI othelloAI_2 = new OthelloAI(1);//AIプレイヤーは黒の場合、0を指定 AIが白の場合1を指定;
 
-        OthelloAI[] othelloAIAgentArrayForBlackAndWhite = {othelloAI_1,othelloAI_2};
 
         //ここから対戦開始
         //int[] cpu_move_position = new int[2];
-
+        boolean continuousPlayFlagForWhite = false;
+        boolean continuousPlayFlagForBlack = false;
         boolean GAME_END_FLAG = false;
         while(GAME_END_FLAG==false){
-            boolean passFlagInNextTurn = false;
-            for(int ai_player=0;ai_player<2;ai_player++) {
-                gameUtil.ChangeTurn();
-                OthelloAI othelloAIAgent = othelloAIAgentArrayForBlackAndWhite[ai_player];
-
-                int[] cpu_move_position = othelloAIAgent.DecideMove(gameUtil.GetBoard());
-                gameUtil.put(gameUtil.GetBoard(), gameUtil.GetTurn(), cpu_move_position[0], cpu_move_position[1]);
+            if(continuousPlayFlagForWhite==false){
+                int[] cpuMovePositionBlack = othelloAI_1.DecideMove(gameUtil.GetBoard());
+                gameUtil.put(gameUtil.GetBoard(), gameUtil.GetTurn(), cpuMovePositionBlack[0], cpuMovePositionBlack[1]);
                 gameUtil.PrintBoard(gameUtil.GetBoard());
 
-                if(gameUtil.checkPass(othelloAIAgent.enemyDiscColor)==true){
+                if(gameUtil.checkPass(othelloAI_1.enemyDiscColor)==true){
                     //相手のターンになったときに、打つ場所が無いのでもう一度自分が打てるようにする
-                    break;
+                    continuousPlayFlagForBlack = true;
                 }
                 else{
+                    continuousPlayFlagForBlack = false;
                     gameUtil.ChangeTurn();
                 }
-                //GAME_END_FLAG = true;
             }
+            if (continuousPlayFlagForBlack==false){
+                int[] cpuMovePositionWhite = othelloAI_2.DecideMove(gameUtil.GetBoard());
+                gameUtil.put(gameUtil.GetBoard(), gameUtil.GetTurn(), cpuMovePositionWhite[0], cpuMovePositionWhite[1]);
+                gameUtil.PrintBoard(gameUtil.GetBoard());
+
+                if(gameUtil.checkPass(othelloAI_1.enemyDiscColor)==true){
+                    //相手のターンになったときに、打つ場所が無いのでもう一度自分が打てるようにする
+                    continuousPlayFlagForWhite = true;
+                }
+                else{
+                    continuousPlayFlagForWhite = false;
+                    gameUtil.ChangeTurn();
+                }
+            }
+            //GAME_END_FLAG = true;
         }
 
     }
