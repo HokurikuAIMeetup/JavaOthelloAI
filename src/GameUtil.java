@@ -278,7 +278,7 @@ public class GameUtil {
                 }
             }
         }
-        ChangeTurn();
+        ChangeTurn();//リバースできなくてもターンの情報を元に戻す
         return true;
     }
 

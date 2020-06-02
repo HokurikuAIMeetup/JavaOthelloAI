@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 public class OthelloAI {
     public GameUtil.Discs aiPlayer;
+    public GameUtil.Discs enemyDiscColor;
     private static final int LIMIT = 3;
     private static final int EVALLIMIT = 1;
     public int countNumOfTurn=0;
@@ -14,15 +15,15 @@ public class OthelloAI {
     public static boolean[][] evalArrayBool;
     public GameUtil gameUtilState;
 
-    int color;
-
     public OthelloAI(int color){
         //this.color = color;
         if(color == 1){
             aiPlayer = GameUtil.Discs.WHITE;
+            enemyDiscColor = GameUtil.Discs.BLACK;
         }
         else{
             aiPlayer = GameUtil.Discs.BLACK;
+            enemyDiscColor = GameUtil.Discs.WHITE;
         }
 
         evalArray=new int[8][8];
@@ -33,7 +34,7 @@ public class OthelloAI {
     public int[] DecideAndConvertMove(int[][] data){
         //TODO:
         int[] array = {4,6};
-        //System.out.println(data);
+
         GameUtil.Discs[][] board = new GameUtil.Discs[8][8];
 
         for(int i=0; i<8; i++) {
