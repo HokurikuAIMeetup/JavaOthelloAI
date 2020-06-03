@@ -1,4 +1,7 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+
 /**
  * Created by tomoueno on 2016/07/29.
  */
@@ -31,35 +34,10 @@ public class OthelloAI {
         gameUtilState = new GameUtil();
     }
 
-    public int[] DecideAndConvertMove(int[][] data){
-        //TODO:
-        int[] array = {4,6};
-
-        GameUtil.Discs[][] board = new GameUtil.Discs[8][8];
-
-        for(int i=0; i<8; i++) {
-            for (int j=0; j<8; j++) {
-                board[i][j] = GameUtil.Discs.WALL;//とりあえずWALLで初期化。後から上書きして対処。
-                if (data[i][j] == 1){
-                    board[i][j] = GameUtil.Discs.BLACK;
-                }
-                if (data[i][j] == 2){
-                    board[i][j] = GameUtil.Discs.WHITE;
-                }
-                if (data[i][j] == 0){
-                    board[i][j] = GameUtil.Discs.BLANK;
-                }
-            }
-        }
-
-        int[] move_array;
-        move_array = DecideMove(board);
-
-        return move_array;
-    }
-
     public int[] DecideMove(GameUtil.Discs[][] board){
         int[] place={-1,-1};
+        //全部の手の評価値を保存してソートする。
+        ArrayList<int[]> moveAndEvalArrayList = new ArrayList<>();
 
         GameUtil.Discs[][] copyBoard = new GameUtil.Discs[8][8];
 
@@ -71,8 +49,8 @@ public class OthelloAI {
 
         System.out.println(Arrays.deepToString(copyBoard));
 
-        int scoreMax = -10000000,score;
-        int alpha=-99999999,beta=999999999;
+        int scoreMax = -999999999,score;
+        int alpha=-999999999,beta=999999999;
 
         for(int i=0; i<8; i++){
             for(int j=0; j<8; j++){
@@ -81,7 +59,7 @@ public class OthelloAI {
                     continue;
                 if(gameUtilState.canReverse(copyBoard,aiPlayer,i, j) == true){
                     if(countNumOfTurn<58) {
-                        //Board.PrintBoard(board);
+                        //序盤・中盤においてAIが思考を行う
 
                         board = gameUtilState.put(board, aiPlayer, i, j);
 
@@ -96,13 +74,16 @@ public class OthelloAI {
                             scoreMax = score;
                         }
 
+                        int[] moveAndEval = {score,place[0],place[1]};
+                        moveAndEvalArrayList.add(moveAndEval);
+
                         for (int k = 0; k < copyBoard.length; k++) {
                             board[k] = new GameUtil.Discs[board[k].length];
                             System.arraycopy(copyBoard[k], 0, board[k], 0, copyBoard[k].length);
                         }
                     }
                     else {
-                        //Board.PrintBoard(board);
+                        //終盤において、AIが思考を行う
 
                         board = gameUtilState.put(board, aiPlayer, i, j);
 
@@ -127,9 +108,22 @@ public class OthelloAI {
             }
         }
 
+        //System.out.println(Arrays.deepToString(moveAndEvalArrayList.toArray()));
+
+        int[][] moveAndEvalList = new int[moveAndEvalArrayList.size()][];//(int[][]) moveAndEvalArrayList.toArray();
+        moveAndEvalList = moveAndEvalArrayList.toArray(moveAndEvalList);
+        Arrays.sort(moveAndEvalList, Comparator.comparingInt(a -> a[0]));
+
+        System.out.println(Arrays.deepToString(moveAndEvalList));
         System.out.println(place);
+
         return place;
     }
+
+
+    //
+    //public int[] DecideRandomizedMove(GameUtil.Discs[][] board) {
+    //}
 
     public int[] EvalMove(GameUtil.Discs[][] board, GameUtil.Discs turn) {
         //aiPlayer=AltulaRiversi.reversiObj.boardState.ChangePlayer(turn);

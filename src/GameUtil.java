@@ -325,15 +325,15 @@ public class GameUtil {
         if(existMove(this.board,nextPlayer)==false){
             nextPlayer=ChangePlayer(nextPlayer);
             if(existMove(this.board,nextPlayer)==false){
-                return true;
+                return true;//白番でも黒番でも打つ場所が無いのでゲーム終了と判定
             }
             else{
-                return false;
+                return false;//色を変えたら打てた、つまりパスは発生するがゲーム終了では無い
             }
         }
-
-        return false;
-
+        else {
+            return false;//一つ目のif文で打つ場所があると判定された、つまりゲーム継続
+        }
     }
 
 

@@ -38,6 +38,9 @@ class Main{
                     continuousPlayFlagForBlack = false;
                     gameUtil.ChangeTurn();
                 }
+                if(gameUtil.checkEnd()){
+                    GAME_END_FLAG = true;
+                }
             }
             if (continuousPlayFlagForBlack==false){
                 int[] cpuMovePositionWhite = othelloAI_2.DecideMove(gameUtil.GetBoard());
@@ -51,6 +54,9 @@ class Main{
                 else{
                     continuousPlayFlagForWhite = false;
                     gameUtil.ChangeTurn();
+                }
+                if(gameUtil.checkEnd()){
+                    GAME_END_FLAG = true;
                 }
             }
             //GAME_END_FLAG = true;
