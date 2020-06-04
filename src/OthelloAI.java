@@ -13,7 +13,8 @@ public class OthelloAI {
     public GameUtil.Discs enemyDiscColor;
     private static final int LIMIT = 3;
     private static final int EVALLIMIT = 1;
-    public int countNumOfTurn=0;
+    private int countNumOfTurn = 0;
+
     public static int[][] evalArray;
     public static boolean[][] evalArrayBool;
     public GameUtil gameUtilState;
@@ -34,7 +35,13 @@ public class OthelloAI {
         gameUtilState = new GameUtil();
     }
 
-    public int[] DecideMove(GameUtil.Discs[][] board){
+    public void GetCountTurnFromGameUtil(){
+        this.countNumOfTurn = GameUtil.countTurn;
+    }
+
+    public int[] DecideMove(GameUtil.Discs[][] board,boolean RANDOM_FLAG){
+        GetCountTurnFromGameUtil();//何手目かを取得し、思考ルーチンで使う
+
         int[] place={-1,-1};
         //全部の手の評価値を保存してソートする。
         ArrayList<int[]> moveAndEvalArrayList = new ArrayList<>();
@@ -88,7 +95,7 @@ public class OthelloAI {
                         board = gameUtilState.put(board, aiPlayer, i, j);
 
                         GameUtil.PrintBoard(board);
-                        System.out.println("Thinking by OthelloAI");
+                        System.out.println("[終盤読み] Thinking by OthelloAI");
                         score = RecursionEndMove(board, gameUtilState.GetTurn(), 60-countNumOfTurn, alpha, beta);
 
 
@@ -108,22 +115,40 @@ public class OthelloAI {
             }
         }
 
-        //System.out.println(Arrays.deepToString(moveAndEvalArrayList.toArray()));
+        if(RANDOM_FLAG) {
+            //System.out.println(Arrays.deepToString(moveAndEvalArrayList.toArray()));
+            int[][] sortedMoveByEval = SortMoveByEval(moveAndEvalArrayList);
+            int[] RandomMoveChoise = ChooseRandomMove(sortedMoveByEval);
+            int[] randomPlace = {RandomMoveChoise[1], RandomMoveChoise[2]};//x, y座標は添字1,2に格納されている
+            return randomPlace;
+        }
+        else{
+            return place;
+        }
+    }
 
+    public int[][] SortMoveByEval(ArrayList<int []> moveAndEvalArrayList){
         int[][] moveAndEvalList = new int[moveAndEvalArrayList.size()][];//(int[][]) moveAndEvalArrayList.toArray();
         moveAndEvalList = moveAndEvalArrayList.toArray(moveAndEvalList);
         Arrays.sort(moveAndEvalList, Comparator.comparingInt(a -> a[0]));
 
         System.out.println(Arrays.deepToString(moveAndEvalList));
-        System.out.println(place);
 
-        return place;
+        return moveAndEvalList;
     }
 
+    public int[] ChooseRandomMove(int[][] moveAndEvalList){
+        int lengthArray = moveAndEvalList.length;
 
-    //
-    //public int[] DecideRandomizedMove(GameUtil.Discs[][] board) {
-    //}
+        //打てる場所の評価の上位5つまででランダムに選択するか、打てる場所が4つ以下ならその中でランダムに選択
+        int top5Index;
+        if (lengthArray >= 5){top5Index = 5;}
+        else{top5Index = lengthArray;}
+
+        int indexMove = (int)(Math.random()*top5Index);
+
+        return moveAndEvalList[indexMove];
+    }
 
     public int[] EvalMove(GameUtil.Discs[][] board, GameUtil.Discs turn) {
         //aiPlayer=AltulaRiversi.reversiObj.boardState.ChangePlayer(turn);

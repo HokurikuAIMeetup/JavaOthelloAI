@@ -26,9 +26,11 @@ class Main{
         boolean GAME_END_FLAG = false;
         while(GAME_END_FLAG==false){
             if(continuousPlayFlagForWhite==false){
-                int[] cpuMovePositionBlack = othelloAI_1.DecideMove(gameUtil.GetBoard());
+
+                int[] cpuMovePositionBlack = othelloAI_1.DecideMove(gameUtil.GetBoard(),gameUtil.JudgeBeginningGameOrNot());
                 gameUtil.put(gameUtil.GetBoard(), gameUtil.GetTurn(), cpuMovePositionBlack[0], cpuMovePositionBlack[1]);
                 gameUtil.PrintBoard(gameUtil.GetBoard());
+                gameUtil.countTurn += 1;
 
                 if(gameUtil.checkPass(othelloAI_1.enemyDiscColor)==true){
                     //相手のターンになったときに、打つ場所が無いのでもう一度自分が打てるようにする
@@ -43,9 +45,10 @@ class Main{
                 }
             }
             if (continuousPlayFlagForBlack==false){
-                int[] cpuMovePositionWhite = othelloAI_2.DecideMove(gameUtil.GetBoard());
+                int[] cpuMovePositionWhite = othelloAI_2.DecideMove(gameUtil.GetBoard(),gameUtil.JudgeBeginningGameOrNot());
                 gameUtil.put(gameUtil.GetBoard(), gameUtil.GetTurn(), cpuMovePositionWhite[0], cpuMovePositionWhite[1]);
                 gameUtil.PrintBoard(gameUtil.GetBoard());
+                gameUtil.countTurn += 1;
 
                 if(gameUtil.checkPass(othelloAI_1.enemyDiscColor)==true){
                     //相手のターンになったときに、打つ場所が無いのでもう一度自分が打てるようにする

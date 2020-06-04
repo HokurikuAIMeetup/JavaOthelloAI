@@ -11,6 +11,7 @@ public class GameUtil {
 
     private Discs board[][] = new Discs[ROWS][COLS];
     private Discs turn;
+    public static int countTurn = 0;
 
     public GameUtil(){
         InitBoard();
@@ -40,6 +41,15 @@ public class GameUtil {
     public Discs GetTurn(){
         return this.turn;
     }
+    public boolean JudgeBeginningGameOrNot(){
+        if(this.countTurn < 20){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public void SetTurn(Discs player){
         this.turn = player;
     }
