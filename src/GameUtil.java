@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameUtil {
     public static enum Discs{
         BLANK,
@@ -6,13 +9,20 @@ public class GameUtil {
         WALL
     }
 
+    public static enum GameHistory{
+        BLACK,
+        WHITE,
+        PASS
+    }
+
     public static final int COLS = 8;
     public static final int ROWS = 8;
-
     private Discs board[][] = new Discs[ROWS][COLS];
     private Discs turn;
     public static int countTurn = 0;
+    public static ArrayList<Object[]> gameHistory = new ArrayList<>();
 
+    //Object[] o = new Object[4];
     public GameUtil(){
         InitBoard();
         System.out.println("ボード初期化完了");
@@ -34,6 +44,12 @@ public class GameUtil {
 
         turn = Discs.BLACK;
     }
+
+    /*
+    public void InitGameHistory(){
+        for(int i = 0; i)
+    }
+    */
 
     public Discs[][] GetBoard(){
         return this.board;
@@ -359,5 +375,28 @@ public class GameUtil {
         }
 
         return false;
+    }
+
+    public void UpdateGameHistory(int x, int y, GameHistory colorOrPass){
+        Object[] logOfThisTurn = {x,y,colorOrPass};
+        this.gameHistory.add(logOfThisTurn);
+    }
+
+    public void UpdateGameHistory(GameHistory colorOrPass){
+        Object[] logOfThisTurn = {null,null,colorOrPass};
+        this.gameHistory.add(logOfThisTurn);
+    }
+
+    public void WriteGameHistoryToSGF(){
+        System.out.println("aaa");
+        String historyOneGame = "";
+        for (int counter = 0; counter < this.gameHistory.size(); counter++) {
+            if(this.gameHistory.get(counter)[2] != GameHistory.PASS) {
+                historyOneGame = historyOneGame + this.gameHistory.get(counter)[0].toString();
+            }
+        }
+
+        System.out.println(historyOneGame);
+
     }
 }

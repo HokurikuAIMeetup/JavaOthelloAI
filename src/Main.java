@@ -28,13 +28,18 @@ class Main{
             if(continuousPlayFlagForWhite==false){
 
                 int[] cpuMovePositionBlack = othelloAI_1.DecideMove(gameUtil.GetBoard(),gameUtil.JudgeBeginningGameOrNot());
-                gameUtil.put(gameUtil.GetBoard(), gameUtil.GetTurn(), cpuMovePositionBlack[0], cpuMovePositionBlack[1]);
+                int xPos = cpuMovePositionBlack[0];
+                int yPos = cpuMovePositionBlack[1];
+
+                gameUtil.put(gameUtil.GetBoard(), gameUtil.GetTurn(), xPos, yPos);
                 gameUtil.PrintBoard(gameUtil.GetBoard());
                 gameUtil.countTurn += 1;
+                gameUtil.UpdateGameHistory(xPos,yPos, GameUtil.GameHistory.BLACK);
 
                 if(gameUtil.checkPass(othelloAI_1.enemyDiscColor)==true){
                     //相手のターンになったときに、打つ場所が無いのでもう一度自分が打てるようにする
                     continuousPlayFlagForBlack = true;
+                    gameUtil.UpdateGameHistory(GameUtil.GameHistory.PASS);
                 }
                 else{
                     continuousPlayFlagForBlack = false;
@@ -46,13 +51,18 @@ class Main{
             }
             if (continuousPlayFlagForBlack==false){
                 int[] cpuMovePositionWhite = othelloAI_2.DecideMove(gameUtil.GetBoard(),gameUtil.JudgeBeginningGameOrNot());
-                gameUtil.put(gameUtil.GetBoard(), gameUtil.GetTurn(), cpuMovePositionWhite[0], cpuMovePositionWhite[1]);
+                int xPos = cpuMovePositionWhite[0];
+                int yPos = cpuMovePositionWhite[1];
+
+                gameUtil.put(gameUtil.GetBoard(), gameUtil.GetTurn(), xPos, yPos);
                 gameUtil.PrintBoard(gameUtil.GetBoard());
                 gameUtil.countTurn += 1;
+                gameUtil.UpdateGameHistory(xPos,yPos, GameUtil.GameHistory.WHITE);
 
                 if(gameUtil.checkPass(othelloAI_1.enemyDiscColor)==true){
                     //相手のターンになったときに、打つ場所が無いのでもう一度自分が打てるようにする
                     continuousPlayFlagForWhite = true;
+                    gameUtil.UpdateGameHistory(GameUtil.GameHistory.PASS);
                 }
                 else{
                     continuousPlayFlagForWhite = false;
@@ -65,7 +75,9 @@ class Main{
             //GAME_END_FLAG = true;
         }
 
+        gameUtil.WriteGameHistoryToSGF();
     }
+
 }
 
 /*TODO
