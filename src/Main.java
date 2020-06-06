@@ -15,8 +15,8 @@ class Main{
         GameUtil gameUtil = new GameUtil();
 
         //othelloAI_1は必ず黒番 othelloAI_2は必ず白番
-        OthelloAI othelloAI_1 = new OthelloAI(0);//AIプレイヤーは黒の場合、0を指定 AIが白の場合1を指定;
-        OthelloAI othelloAI_2 = new OthelloAI(1);//AIプレイヤーは黒の場合、0を指定 AIが白の場合1を指定;
+        OthelloAI othelloAI_1 = new OthelloAI(0,"OthelloAI_black");//AIプレイヤーは黒の場合0を、AIが白の場合1を指定　右のStringはAIの名前
+        OthelloAI othelloAI_2 = new OthelloAI(1,"OthelloAI_white");//AIプレイヤーは黒の場合0を、AIが白の場合1を指定　右のStringはAIの名前
 
 
         //ここから対戦開始

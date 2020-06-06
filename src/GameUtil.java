@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -388,15 +391,33 @@ public class GameUtil {
     }
 
     public void WriteGameHistoryToSGF(){
-        System.out.println("aaa");
+        String[] convertCharList = {"A","B","C", "D", "E", "F", "G", "H"};
         String historyOneGame = "";
         for (int counter = 0; counter < this.gameHistory.size(); counter++) {
-            if(this.gameHistory.get(counter)[2] != GameHistory.PASS) {
-                historyOneGame = historyOneGame + this.gameHistory.get(counter)[0].toString();
+
+            String tmpCountTurn;
+            if(counter % 2 == 0){ tmpCountTurn = "" + (((counter+1) / 2)+1) + ". "; }
+            else{ tmpCountTurn = ""; }
+
+            if(this.gameHistory.get(counter)[2] != GameHistory.PASS) {//Memo: String.valueOf(t)なんかも便利
+                String x = convertCharList[(int) this.gameHistory.get(counter)[0]];
+                String y = ""+((int) this.gameHistory.get(counter)[1] + 1);
+                historyOneGame = historyOneGame + tmpCountTurn + x + y + " ";
+            }
+            else{
+                historyOneGame = historyOneGame + "-- ";
             }
         }
 
         System.out.println(historyOneGame);
+        try{
+            File file = new File("./sgf_logs/result_game.sgf");
+            FileWriter filewriter = new FileWriter(file);
+            filewriter.write(historyOneGame);
+            filewriter.close();
+        }catch(IOException e){
+            System.out.println(e);
+        }
 
     }
 }

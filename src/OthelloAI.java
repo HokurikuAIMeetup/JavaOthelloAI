@@ -11,6 +11,7 @@ import java.util.Comparator;
 public class OthelloAI {
     public GameUtil.Discs aiPlayer;
     public GameUtil.Discs enemyDiscColor;
+    public String aiName;
     private static final int LIMIT = 3;
     private static final int EVALLIMIT = 1;
     private int countNumOfTurn = 0;
@@ -19,7 +20,7 @@ public class OthelloAI {
     public static boolean[][] evalArrayBool;
     public GameUtil gameUtilState;
 
-    public OthelloAI(int color){
+    public OthelloAI(int color,String aiName){
         //this.color = color;
         if(color == 1){
             aiPlayer = GameUtil.Discs.WHITE;
@@ -29,6 +30,8 @@ public class OthelloAI {
             aiPlayer = GameUtil.Discs.BLACK;
             enemyDiscColor = GameUtil.Discs.WHITE;
         }
+
+        this.aiName = aiName;
 
         evalArray=new int[8][8];
         evalArrayBool=new boolean[8][8];
