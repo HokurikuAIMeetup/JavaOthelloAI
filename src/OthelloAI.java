@@ -273,10 +273,29 @@ public class OthelloAI {
 
     int edge_eval(GameUtil.Discs[][] edge){
         //edgeは盤面の辺に近い２列分を取り出したもの。四辺あるので一回の評価で４回呼び出される。
-        int[][] edgePattern1 = {{}};
+
+
+
         return ev;
     }
 
+    void convert_char_to_pattern(){
+        // 数字:評価値　o:自分の石 x:相手の石 .:空白 *:なんでも良い
+        
+        String edgePattern1 ="+30_"
+                +".oooooo."
+                +"..oooo..";
+
+        String edgePattern2 ="-100_"
+                +"..ooooo."
+                +"..oooo..";
+
+        String edgePattern3 ="-100_"
+                +".ooooo.."
+                +"..oooo..";
+
+
+    }
 
 
     int count_disc(GameUtil.Discs[][] board, GameUtil.Discs selfPlayer){
