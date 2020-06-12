@@ -312,14 +312,15 @@ public class OthelloAI {
 
     }
 
-    GameUtil.Discs ConvertCharToDiscs(String discStr){
-        if(discStr=="o"){
+    GameUtil.Discs ConvertCharToDiscs(Character discStr){
+        //toStringはどうやら必要らしい
+        if(discStr.toString().equals("o")){
             return aiPlayer;
         }
-        else if(discStr=="x"){
+        else if(discStr.toString().equals("x")){
             return enemyDiscColor;
         }
-        else if(discStr=="."){
+        else if(discStr.toString().equals(".")){
             return GameUtil.Discs.BLANK;
         }
         else{
@@ -335,7 +336,7 @@ public class OthelloAI {
             for(int i=0;i<2;i++){
                 for(int j=0;j<8;j++){
                     //System.out.println(edgeStrPattern.get(0).split("_", 0)[1].charAt(i*boardSize + j));
-                    //edgePatternConverted[loop][i][j] = ConvertCharToDiscs(edgeStrPattern.get(0).split("_", 0)[1][0]);
+                    edgePatternConverted[loop][i][j] = ConvertCharToDiscs(edgeStrPattern.get(0).split("_", 0)[1].charAt(i*boardSize + j));
                 }
             }
         }
