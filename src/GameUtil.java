@@ -9,7 +9,8 @@ public class GameUtil {
         BLANK,
         BLACK,
         WHITE,
-        WALL
+        WALL,
+        ANY
     }
 
     public static enum GameHistory{

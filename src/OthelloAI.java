@@ -276,25 +276,81 @@ public class OthelloAI {
 
 
 
-        return ev;
+        //return ev;
+        return 1;
     }
 
-    void convert_char_to_pattern(){
+    void ConvertCharToPattern(){
         // 数字:評価値　o:自分の石 x:相手の石 .:空白 *:なんでも良い
-        
-        String edgePattern1 ="+30_"
+        //ArrayList<Object[]> edgePatternConverted = new ArrayList<>();
+
+        //Object[] logOfThisTurn = {x,y,colorOrPass};
+        ArrayList<String> edgeStrPattern = new ArrayList<>();
+
+        edgeStrPattern.add("+30_"
                 +".oooooo."
-                +"..oooo..";
+                +"..oooo..");
 
-        String edgePattern2 ="-100_"
+        edgeStrPattern.add("-100_"
                 +"..ooooo."
-                +"..oooo..";
+                +"..oooo..");
 
-        String edgePattern3 ="-100_"
+        edgeStrPattern.add("-100_"
                 +".ooooo.."
-                +"..oooo..";
+                +"..oooo..");
+        //文字で表したパターンを一行のint型の配列に変換
+        GameUtil.Discs [][][] edgePatternConverted = new GameUtil.Discs[edgeStrPattern.size()][2][boardSize*2];
+        edgePatternConverted = charPatternConverter(edgeStrPattern);
 
+        int[] edgeIntEvalConverted = new int[edgeStrPattern.size()];
+        edgeIntEvalConverted = intEvalConverter(edgeStrPattern);
 
+        System.out.println(edgePatternConverted[0]);
+        System.out.println(edgePatternConverted[2]);
+        System.out.println(edgeIntEvalConverted[0]);
+        System.out.println(edgeIntEvalConverted[2]);
+
+    }
+
+    GameUtil.Discs ConvertCharToDiscs(String discStr){
+        if(discStr=="o"){
+            return aiPlayer;
+        }
+        else if(discStr=="x"){
+            return enemyDiscColor;
+        }
+        else if(discStr=="."){
+            return GameUtil.Discs.BLANK;
+        }
+        else{
+            return GameUtil.Discs.ANY;
+        }
+    }
+
+    GameUtil.Discs[][][] charPatternConverter(ArrayList<String> edgeStrPattern){
+        GameUtil.Discs [][][] edgePatternConverted = new GameUtil.Discs [edgeStrPattern.size()][2][boardSize];
+        System.out.println(edgeStrPattern.get(0));
+        System.out.println(edgeStrPattern.get(1));
+        for(int loop=0;loop<edgeStrPattern.size();loop++){
+            for(int i=0;i<2;i++){
+                for(int j=0;j<8;j++){
+                    //System.out.println(edgeStrPattern.get(0).split("_", 0)[1].charAt(i*boardSize + j));
+                    //edgePatternConverted[loop][i][j] = ConvertCharToDiscs(edgeStrPattern.get(0).split("_", 0)[1][0]);
+                }
+            }
+        }
+
+        return edgePatternConverted;
+    }
+
+    int[] intEvalConverter(ArrayList<String> edgeStrPattern){
+        int[] edgePatternConverted = new int[edgeStrPattern.size()];
+
+        for(int idx=0;idx<edgeStrPattern.size();idx++){
+            edgePatternConverted[idx] = Integer.parseInt(String.valueOf(edgeStrPattern.get(idx).split("_", 0)[0].toCharArray()));
+        }
+
+        return edgePatternConverted;
     }
 
 

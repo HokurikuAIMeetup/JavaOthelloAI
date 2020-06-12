@@ -18,6 +18,9 @@ class Main{
         OthelloAI othelloAI_1 = new OthelloAI(0,"OthelloAI_black");//AIプレイヤーは黒の場合0を、AIが白の場合1を指定　右のStringはAIの名前
         OthelloAI othelloAI_2 = new OthelloAI(1,"OthelloAI_white");//AIプレイヤーは黒の場合0を、AIが白の場合1を指定　右のStringはAIの名前
 
+        //TODO: テストケース
+        othelloAI_1.ConvertCharToPattern();
+        System.exit(0);
 
         //ここから対戦開始
         //int[] cpu_move_position = new int[2];
