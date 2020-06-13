@@ -252,27 +252,32 @@ public class OthelloAI {
         }
         eval_score = eval_score + edge_eval(edge);
 
-        for (int i = 0; i < 8; i++){//下辺のコピー
-            for (int j = 0; j < 2; j++){
-                edge[j][i] = board[boardSize - i - 1][j];
+
+        for (int i = 0; i < 2; i++){
+            for (int j = 0; j < 8; j++){//下辺のコピー
+                edge[i][j] = board[boardSize - i - 1][j];
             }
         }
         eval_score = eval_score + edge_eval(edge);
 
-        for (int i = 0; i < 8; i++){//左辺のコピー
-            for (int j = 0; j < 2; j++){
+        for (int i = 0; i < 2; i++){//左辺のコピー
+            for (int j = 0; j < 8; j++){
                 edge[i][j] = board[j][i];
             }
         }
         eval_score = eval_score + edge_eval(edge);
 
-        for (int i = 0; i < 8; i++){//右辺のコピー
-            for (int j = 0; j < 2; j++){
-                edge[i - 1][j - 1] = board[8 - j - 1][8 - i - 1];
+        for (int i = 0; i < 2; i++){//右辺のコピー
+            for (int j = 0; j < 8; j++){
+                edge[i][j] = board[8 - j - 1][8 - i - 1];
             }
         }
         eval_score = eval_score + edge_eval(edge);
 
+        if(eval_score!=0){
+            System.out.print("eval_score: ¥n");
+            System.out.println(sumOfEval);
+        }
         return eval_score;
     }
 
@@ -294,14 +299,12 @@ public class OthelloAI {
                 }
                 sumOfEval += this.edgeIntEvalConverted[loop];//パターンがマッチした
             } catch (Exception e) {
-                System.out.println("例外　パターンがマッチしませんでした");
-                System.out.println(e);
+                //System.out.println("例外　パターンがマッチしませんでした");
+                //System.out.println(e);
             }
         }
 
-        //return ev;
-        System.out.print("sumOfEval: ¥n");
-        System.out.println(sumOfEval);
+
         return sumOfEval;
     }
 
