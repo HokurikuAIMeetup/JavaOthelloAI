@@ -238,7 +238,7 @@ public class OthelloAI {
     }
 
     int eval_mid(GameUtil.Discs[][] board, GameUtil.Discs player){
-        int eval_score = 437;
+        int eval_score = 0;
 
         GameUtil.Discs[][] edge=new GameUtil.Discs[2][8];
 
@@ -276,7 +276,7 @@ public class OthelloAI {
 
         if(eval_score!=0){
             System.out.print("eval_score: ¥n");
-            System.out.println(sumOfEval);
+            System.out.println(eval_score);
         }
         return eval_score;
     }
