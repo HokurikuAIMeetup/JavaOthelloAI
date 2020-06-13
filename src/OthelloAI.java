@@ -16,6 +16,8 @@ public class OthelloAI {
     private static final int EVALLIMIT = 10;
     private int countNumOfTurn = 0;
     private int boardSize = 8;
+    private GameUtil.Discs [][][] edgePatternConverted;
+    private int[] edgeIntEvalConverted;
 
     public static int[][] evalArray;
     public static boolean[][] evalArrayBool;
@@ -37,6 +39,9 @@ public class OthelloAI {
         evalArray=new int[8][8];
         evalArrayBool=new boolean[8][8];
         gameUtilState = new GameUtil();
+
+        RegisterAndConvertCharToEval();
+        RegisterAndConvertCharToPattern();
     }
 
     public void GetCountTurnFromGameUtil(){
@@ -272,47 +277,82 @@ public class OthelloAI {
     }
 
     int edge_eval(GameUtil.Discs[][] edge){
-        //edgeは盤面の辺に近い２列分を取り出したもの。四辺あるので一回の評価で４回呼び出される。
+        //edgeは盤面の辺に近い２列分を取り出したもの。四辺あるので一回の評価関数の呼び出しで４回呼び出される。
+        int sumOfEval = 0;
 
-
+        for(int loop=0;loop<this.edgePatternConverted.length;loop++){
+            boolean PatternMatchFlag = true;
+            try {
+                for (int i = 0; i < 2; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (edge[i][j] == GameUtil.Discs.ANY || edge[i][j] != this.edgePatternConverted[loop][i][j]) {
+                            continue;
+                        } else {
+                            throw new Exception();
+                        }
+                    }
+                }
+                sumOfEval += this.edgeIntEvalConverted[loop];//パターンがマッチした
+            } catch (Exception e) {
+                System.out.println("例外　パターンがマッチしませんでした");
+                System.out.println(e);
+            }
+        }
 
         //return ev;
-        return 1;
+        System.out.print("sumOfEval: ¥n");
+        System.out.println(sumOfEval);
+        return sumOfEval;
     }
 
-    void ConvertCharToPattern(){
+    ArrayList<String> GetStrPattern(){
         // 数字:評価値　o:自分の石 x:相手の石 .:空白 *:なんでも良い
-        //ArrayList<Object[]> edgePatternConverted = new ArrayList<>();
-
-        //Object[] logOfThisTurn = {x,y,colorOrPass};
+        //　白の場合と黒の場合を反転させた評価値も作る。
         ArrayList<String> edgeStrPattern = new ArrayList<>();
 
-        edgeStrPattern.add("+30_"
+        //ピュア山
+        edgeStrPattern.add("+50_"
                 +".oooooo."
-                +"..oooo..");
+                +"*.oooo.*");
 
-        edgeStrPattern.add("-100_"
+        //山
+        edgeStrPattern.add("+20_"
+                +".oooooo."
+                +"*.o**o.*");
+
+        edgeStrPattern.add("-200_"
                 +"..ooooo."
-                +"..oooo..");
+                +"*.o**o.*");
 
-        edgeStrPattern.add("-100_"
+        edgeStrPattern.add("-200_"
                 +".ooooo.."
-                +"..oooo..");
-        //文字で表したパターンを一行のint型の配列に変換
-        GameUtil.Discs [][][] edgePatternConverted = new GameUtil.Discs[edgeStrPattern.size()][2][boardSize*2];
-        edgePatternConverted = charPatternConverter(edgeStrPattern);
+                +"*.o**o.*");
+        //X打ち　左
+        edgeStrPattern.add("-500_"
+                +".******."
+                +"*o****.*");
+        //X打ち　右
+        edgeStrPattern.add("-500_"
+                +".******."
+                +"*.****o*");
 
-        int[] edgeIntEvalConverted = new int[edgeStrPattern.size()];
-        edgeIntEvalConverted = intEvalConverter(edgeStrPattern);
-
-        System.out.println(edgePatternConverted[0]);
-        System.out.println(edgePatternConverted[2]);
-        System.out.println(edgeIntEvalConverted[0]);
-        System.out.println(edgeIntEvalConverted[2]);
-
+        return edgeStrPattern;
     }
 
-    GameUtil.Discs ConvertCharToDiscs(Character discStr){
+    void RegisterAndConvertCharToPattern(){
+        //文字で表したパターンをDisc型の配列に変換
+        ArrayList<String> edgeStrPattern = GetStrPattern();
+        this.edgePatternConverted = charPatternConverter(edgeStrPattern);
+        System.out.println(this.edgePatternConverted[0]);
+    }
+
+    void RegisterAndConvertCharToEval(){
+        ArrayList<String> edgeStrPattern = GetStrPattern();
+        this.edgeIntEvalConverted = intEvalConverter(edgeStrPattern);
+        System.out.println(edgeIntEvalConverted[0]);
+    }
+
+    GameUtil.Discs CharToDiscs(Character discStr){
         //toStringはどうやら必要らしい
         if(discStr.toString().equals("o")){
             return aiPlayer;
@@ -336,7 +376,7 @@ public class OthelloAI {
             for(int i=0;i<2;i++){
                 for(int j=0;j<8;j++){
                     //System.out.println(edgeStrPattern.get(0).split("_", 0)[1].charAt(i*boardSize + j));
-                    edgePatternConverted[loop][i][j] = ConvertCharToDiscs(edgeStrPattern.get(0).split("_", 0)[1].charAt(i*boardSize + j));
+                    edgePatternConverted[loop][i][j] = CharToDiscs(edgeStrPattern.get(0).split("_", 0)[1].charAt(i*boardSize + j));
                 }
             }
         }

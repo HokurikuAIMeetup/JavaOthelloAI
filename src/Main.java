@@ -2,11 +2,10 @@ import java.util.Arrays;
 
 class Main{
     //public static PlayGame playgame;
-    public static int BOARD_SIZE  = 8;
-
     public static void PrintArray(int[] anyArray) {
         System.out.println(Arrays.toString(anyArray));
     }
+
 
     public static void main(String args[]) {
         System.out.println("Hello!");
@@ -19,8 +18,8 @@ class Main{
         OthelloAI othelloAI_2 = new OthelloAI(1,"OthelloAI_white");//AIプレイヤーは黒の場合0を、AIが白の場合1を指定　右のStringはAIの名前
 
         //TODO: テストケース
-        othelloAI_1.ConvertCharToPattern();
-        System.exit(0);
+        //othelloAI_1.eval_mid(board, GameUtil.Discs.BLACK)
+        //System.exit(0);
 
         //ここから対戦開始
         //int[] cpu_move_position = new int[2];
