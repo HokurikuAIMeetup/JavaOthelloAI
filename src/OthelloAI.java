@@ -239,6 +239,8 @@ public class OthelloAI {
 
     int eval_mid(GameUtil.Discs[][] board, GameUtil.Discs player){
         int eval_score = 0;
+        eval_score += Liberty(board);
+        //System.out.println("Liberty(eval_score):"+eval_score);
 
         GameUtil.Discs[][] edge=new GameUtil.Discs[2][8];
 
@@ -322,11 +324,11 @@ public class OthelloAI {
         edgeStrPattern.add("+20_"
                 +".oooooo."
                 +"*.o**o.*");
-
+         //ウイング
         edgeStrPattern.add("-200_"
                 +"..ooooo."
                 +"*.o**o.*");
-
+        //ウイング
         edgeStrPattern.add("-200_"
                 +".ooooo.."
                 +"*.o**o.*");
@@ -338,6 +340,47 @@ public class OthelloAI {
         edgeStrPattern.add("-500_"
                 +".******."
                 +"*.****o*");
+        //隅をゲット
+        edgeStrPattern.add("-500_"
+                +"o*******"
+                +"********");
+        //隅をゲット
+        edgeStrPattern.add("-500_"
+                +"*******o"
+                +"********");
+        //敵　ピュア山
+        edgeStrPattern.add("-50_"
+                +".xxxxxx."
+                +"*.xxxx.*");
+
+        //敵　山
+        edgeStrPattern.add("-20_"
+                +".xxxxxx."
+                +"*.x**x.*");
+        //敵　ウイング
+        edgeStrPattern.add("+200_"
+                +"..xxxxx."
+                +"*.x**x.*");
+        //敵　ウイング
+        edgeStrPattern.add("+200_"
+                +".xxxxx.."
+                +"*.x**x.*");
+        //敵　X打ち　左
+        edgeStrPattern.add("+500_"
+                +".******."
+                +"*x****.*");
+        //敵　X打ち　右
+        edgeStrPattern.add("+500_"
+                +".******."
+                +"*.****x*");
+        //敵　隅をゲット
+        edgeStrPattern.add("-500_"
+                +"o*******"
+                +"********");
+        //敵　隅をゲット
+        edgeStrPattern.add("-500_"
+                +"*******o"
+                +"********");
 
         return edgeStrPattern;
     }
@@ -397,6 +440,41 @@ public class OthelloAI {
         return edgePatternConverted;
     }
 
+    int Liberty(GameUtil.Discs[][] board){
+        int eval=0;
+
+        for (int i = 1; i < 8; i++){
+            for (int j = 1; j < 8; j++){
+                if (board[i][j] == aiPlayer){
+                    for (int e = -1; e <= 1; e++){
+                        for (int d = -1; d <= 1; d++){
+                            if (d == 0 && e == 0) continue;
+
+                            if(0<=i+e && i+e < 8 && 0<=j+d && j+d<8){
+                                if ( board[i + e][j + d] == GameUtil.Discs.BLANK){
+                                    eval = eval - 5;//自分の石の周りに空白があったら5点マイナス
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (board[i][j] == enemyDiscColor){
+                    for (int e = -1; e <= 1; e++){
+                        for (int d = -1; d <= 1; d++){
+                            if (d == 0 && e == 0) continue;
+                            if(0<=i+e && i+e<8 && 0<=j+d && j+d<8) {
+                                if (board[i + e][j + d] == GameUtil.Discs.BLANK) {
+                                    eval = eval + 5;//相手の石の周りに空白があったら5点プラス
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return eval;
+    }
 
     int count_disc(GameUtil.Discs[][] board, GameUtil.Discs selfPlayer){
         //TODO: boardは添字0から開始
