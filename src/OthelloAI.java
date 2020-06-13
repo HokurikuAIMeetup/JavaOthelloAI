@@ -141,7 +141,7 @@ public class OthelloAI {
         moveAndEvalList = moveAndEvalArrayList.toArray(moveAndEvalList);
         Arrays.sort(moveAndEvalList, Comparator.comparingInt(a -> a[0]));
 
-        System.out.println(Arrays.deepToString(moveAndEvalList));
+        //System.out.println(Arrays.deepToString(moveAndEvalList));
 
         return moveAndEvalList;
     }
@@ -276,10 +276,13 @@ public class OthelloAI {
         }
         eval_score = eval_score + edge_eval(edge);
 
+        /*
         if(eval_score!=0){
             System.out.print("eval_score: ¥n");
             System.out.println(eval_score);
         }
+        */
+
         return eval_score;
     }
 
@@ -389,13 +392,11 @@ public class OthelloAI {
         //文字で表したパターンをDisc型の配列に変換
         ArrayList<String> edgeStrPattern = GetStrPattern();
         this.edgePatternConverted = charPatternConverter(edgeStrPattern);
-        System.out.println(this.edgePatternConverted[0]);
     }
 
     void RegisterAndConvertCharToEval(){
         ArrayList<String> edgeStrPattern = GetStrPattern();
         this.edgeIntEvalConverted = intEvalConverter(edgeStrPattern);
-        System.out.println(edgeIntEvalConverted[0]);
     }
 
     GameUtil.Discs CharToDiscs(Character discStr){
@@ -416,12 +417,10 @@ public class OthelloAI {
 
     GameUtil.Discs[][][] charPatternConverter(ArrayList<String> edgeStrPattern){
         GameUtil.Discs [][][] edgePatternConverted = new GameUtil.Discs [edgeStrPattern.size()][2][boardSize];
-        System.out.println(edgeStrPattern.get(0));
-        System.out.println(edgeStrPattern.get(1));
+
         for(int loop=0;loop<edgeStrPattern.size();loop++){
             for(int i=0;i<2;i++){
                 for(int j=0;j<8;j++){
-                    //System.out.println(edgeStrPattern.get(0).split("_", 0)[1].charAt(i*boardSize + j));
                     edgePatternConverted[loop][i][j] = CharToDiscs(edgeStrPattern.get(0).split("_", 0)[1].charAt(i*boardSize + j));
                 }
             }
